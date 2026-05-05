@@ -4,7 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
+	"b1_projet-JS_Forum/internal/auth"
 	"b1_projet-JS_Forum/internal/db"
+
+	"github.com/google/uuid"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -59,32 +62,41 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		mdp := r.FormValue("mdp")
 
-		user, err := db.GetUserByEmail(email)
+		// 1. récupérer user
+		var userID int
+		var hash string
+
+		err := db.DB.QueryRow(
+			"SELECT id, mdp_hash FROM users WHERE email = ?",
+			email,
+		).Scan(&userID, &hash)
 
 		if err != nil {
-			http.Error(
-				w,
-				"Utilisateur introuvable",
-				http.StatusUnauthorized,
-			)
+			http.Error(w, "User not found", 401)
 			return
 		}
 
 		err = bcrypt.CompareHashAndPassword(
-			[]byte(user.Mdp),
+			[]byte(hash),
 			[]byte(mdp),
 		)
 
 		if err != nil {
-			http.Error(
-				w,
-				"Mot de passe incorrect",
-				http.StatusUnauthorized,
-			)
+			http.Error(w, "Mauvais mot de passe", 401)
 			return
 		}
 
-		w.Write([]byte("Connexion réussie"))
+		cookie := uuid.New().String()
+
+		err = db.CreateSession(userID, cookie)
+		if err != nil {
+			http.Error(w, "Session error", 500)
+			return
+		}
+
+		auth.SetSessionCookie(w, cookie)
+
+		w.Write([]byte("Logged in"))
 	}
 }
 
