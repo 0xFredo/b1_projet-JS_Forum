@@ -3,13 +3,9 @@ package handlers
 import (
 	"net/http"
 
-<<<<<<< HEAD
-	"forum/internal/db"
+	"b1_projet-JS_Forum/internal/db"
 
 	"golang.org/x/crypto/bcrypt"
-=======
-	"b1_projet-JS_Forum/internal/db"
->>>>>>> refs/remotes/origin/main
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
