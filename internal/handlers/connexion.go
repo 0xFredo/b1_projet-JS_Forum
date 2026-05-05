@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"forum/internal/db"
+	"b1_projet-JS_Forum/internal/db"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
