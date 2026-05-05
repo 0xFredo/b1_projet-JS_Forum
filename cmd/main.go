@@ -1,8 +1,8 @@
 package main
 
 import (
-	"forum/internal/db"
-	"forum/internal/handlers"
+	"b1_projet-JS_Forum/internal/db"
+	"b1_projet-JS_Forum/internal/handlers"
 	"net/http"
 )
 
