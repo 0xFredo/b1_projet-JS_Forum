@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"forum/internal/db"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -19,18 +21,24 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		mdp := r.FormValue("mdp")
 
-		err := db.CreateUser(
-			identifiant,
-			email,
-			mdp,
+		mdp_hash, err := bcrypt.GenerateFromPassword(
+			[]byte(mdp),
+			bcrypt.DefaultCost,
 		)
 
 		if err != nil {
-			http.Error(
-				w,
-				err.Error(),
-				http.StatusInternalServerError,
-			)
+			http.Error(w, "Erreur hash", 500)
+			return
+		}
+
+		err = db.CreateUser(
+			identifiant,
+			email,
+			string(mdp_hash),
+		)
+
+		if err != nil {
+			http.Error(w, err.Error(), 500)
 			return
 		}
 
