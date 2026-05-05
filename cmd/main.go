@@ -16,6 +16,7 @@ func main() {
 	http.HandleFunc("/register", handlers.Register)
 	http.HandleFunc("/login", handlers.Login)
 	http.HandleFunc("/delete-user", handlers.DeleteUser)
+	//http.HandleFunc("/create-post", auth.RequireAuth(handlers.CreatePost))
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
