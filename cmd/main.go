@@ -1,19 +1,24 @@
 package main
 
 import (
+	"log"
+	"net/http"
+
 	"b1_projet-JS_Forum/internal/db"
 	"b1_projet-JS_Forum/internal/handlers"
-	"net/http"
 )
 
 func main() {
 
 	db.InitDB()
-
 	db.CreateTables()
 
 	http.HandleFunc("/register", handlers.Register)
+	http.HandleFunc("/login", handlers.Login)
+	http.HandleFunc("/delete-user", handlers.DeleteUser)
 
-	http.ListenAndServe(":8080", nil)
-
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
