@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Forum</h1>
+
+{{ range . }}
+
+    <hr>
+
+    <h2>
+        {{ .Title }}
+    </h2>
+
+    <p>
+        Posté par : {{ .AuthorName }}
+    </p>
+
+    <p>
+        {{ .Content }}
+    </p>
+
+    {{ if .ImagePath }}
+        <img
+            src="/{{ .ImagePath }}"
+            width="300">
+    {{ end }}
+
+    <p>
+        {{ .CreatedAt.Format "02/01/2006 à 15:04" }}
+    </p>
+
+{{ end }}
+
+</body>
+</html>
