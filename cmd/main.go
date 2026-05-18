@@ -17,9 +17,11 @@ func main() {
 	http.HandleFunc("/login", handlers.Login)
 	http.HandleFunc("/delete-user", handlers.DeleteUser)
 	http.HandleFunc("/create-post", handlers.CreatePost)
+	http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("uploads"))))
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }

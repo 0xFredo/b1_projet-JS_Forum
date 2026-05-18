@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"io"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 
 	"b1_projet-JS_Forum/internal/auth"
@@ -152,9 +155,38 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		title := r.FormValue("title")
 		content := r.FormValue("content")
 
+		// image
 		imagePath := ""
 
-		err = db.CreatePost(userID, title, content, imagePath)
+		file, header, err := r.FormFile("image")
+
+		if err == nil {
+
+			defer file.Close()
+
+			filename := uuid.New().String() +
+				filepath.Ext(header.Filename)
+
+			imagePath = "uploads/" + filename
+
+			dst, err := os.Create(imagePath)
+			if err != nil {
+				http.Error(w, err.Error(), 500)
+				return
+			}
+
+			defer dst.Close()
+
+			io.Copy(dst, file)
+		}
+
+		err = db.CreatePost(
+			userID,
+			title,
+			content,
+			imagePath,
+		)
+
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
