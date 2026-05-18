@@ -62,7 +62,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		mdp := r.FormValue("mdp")
 
-		// 1. récupérer user
 		var userID int
 		var hash string
 
@@ -90,13 +89,13 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 		err = db.CreateSession(userID, cookie)
 		if err != nil {
-			http.Error(w, "Session error", 500)
+			http.Error(w, err.Error(), 500)
 			return
 		}
 
 		auth.SetSessionCookie(w, cookie)
 
-		w.Write([]byte("Logged in"))
+		w.Write([]byte("Connecté"))
 	}
 }
 
@@ -127,4 +126,40 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write([]byte("user supprimé"))
+}
+
+func CreatePost(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "GET" {
+		http.ServeFile(w, r, "templates/create_post.html")
+		return
+	}
+
+	if r.Method == "POST" {
+
+		cookie, err := r.Cookie("session_token")
+		if err != nil {
+			http.Error(w, "Not logged in", 401)
+			return
+		}
+
+		userID, err := db.GetUserIDFromToken(cookie.Value)
+		if err != nil {
+			http.Error(w, "Invalid session", 401)
+			return
+		}
+
+		title := r.FormValue("title")
+		content := r.FormValue("content")
+
+		imagePath := ""
+
+		err = db.CreatePost(userID, title, content, imagePath)
+		if err != nil {
+			http.Error(w, err.Error(), 500)
+			return
+		}
+
+		w.Write([]byte("Post créé"))
+	}
 }

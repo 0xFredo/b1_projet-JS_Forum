@@ -16,8 +16,8 @@ func CreateTables() {
 	CREATE TABLE IF NOT EXISTS sessions (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		user_id INTEGER NOT NULL,
-		cookie TEXT UNIQUE NOT NULL,
-		date_expiration DATETIME NOT NULL,
+		token TEXT UNIQUE NOT NULL,
+		expires_at DATETIME NOT NULL,
 
 		FOREIGN KEY(user_id) REFERENCES users(id)
 	);
@@ -30,10 +30,10 @@ func CreateTables() {
 	CREATE TABLE IF NOT EXISTS posts (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		user_id INTEGER NOT NULL,
-		titre TEXT NOT NULL,
-		contenue TEXT NOT NULL,
+		title TEXT NOT NULL,
+		content TEXT NOT NULL,
 		image_path TEXT,
-		date_création DATETIME DEFAULT CURRENT_TIMESTAMP,
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 		FOREIGN KEY(user_id) REFERENCES users(id)
 	);

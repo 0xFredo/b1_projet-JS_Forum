@@ -10,3 +10,15 @@ func CreateSession(userID int, token string) error {
 	_, err := DB.Exec(query, userID, token)
 	return err
 }
+
+func GetUserIDFromToken(token string) (int, error) {
+
+	var userID int
+
+	err := DB.QueryRow(
+		"SELECT user_id FROM sessions WHERE token = ?",
+		token,
+	).Scan(&userID)
+
+	return userID, err
+}
