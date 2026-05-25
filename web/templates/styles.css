@@ -25,7 +25,7 @@ body {
 }
 
 header {
-    padding: 80px;
+    padding: 80px 0 0 0;
     display: flex;
     align-items: center;   /* centre verticalement */
     justify-content: center; /* optionnel : centre horizontalement */
@@ -55,4 +55,30 @@ a {
 
 .tips-btn {
     background-image: url("../assets/message.png");
+}
+
+/* Conteneur principal */
+.container {
+  width: 680px;        /* taille fixe ou max-width */
+  margin: 0 auto;       /* centre horizontalement */
+  display: flex;        /* active le mode côte à côte */
+  gap: 20px;            /* espace entre les blocs */
+  padding: 20px;
+  height: 800px;
+}
+
+/* Bloc de gauche : largeur fixe */
+.left-box {
+  width: 200px;         /* largeur fixe */
+  height: auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Bloc de droite : prend tout l’espace restant */
+.right-box {
+  flex: 1;              /* occupe tout l’espace disponible */
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 10px;
 }
