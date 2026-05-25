@@ -1,6 +1,6 @@
 @font-face {
     font-family: "TAN Pearl";
-    src: url("../../fonts/tan-pearl.otf") format("opentype");
+    src: url("../fonts/tan-pearl.otf") format("opentype");
     font-weight: normal;
     font-style: normal;
 }
@@ -13,7 +13,7 @@ body {
             rgba(0, 0, 0, 0) 10%,
             rgba(0, 0, 0, 0.85) 70%,
             rgba(0, 0, 0, 1) 100%),
-        url("../../assets/background.JPG");
+        url("../assets/background.JPG");
     background-size: cover;
     background-position: center;
     font-family: Arial, Helvetica, sans-serif;
@@ -36,8 +36,19 @@ strong {
     color:#e1c56a;
 }
 
-.icon-btn img {
+a {
     width: 96px;
     height: 96px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     filter: invert(1); /* transforme noir → blanc */
+}
+
+.profile-btn {
+    background-image: url("../assets/profile.png");
+}
+
+.tips-btn {
+    background-image: url("../assets/message.png");
 }
