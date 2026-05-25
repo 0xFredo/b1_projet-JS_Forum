@@ -18,7 +18,7 @@ import (
 func Register(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
-		http.ServeFile(w, r, "templates/signup.html")
+		http.ServeFile(w, r, "templates/profile.html")
 		return
 	}
 
@@ -56,7 +56,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 func Login(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
-		http.ServeFile(w, r, "templates/signin.html")
+		http.ServeFile(w, r, "templates/profile.html")
 		return
 	}
 
