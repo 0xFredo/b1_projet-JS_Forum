@@ -1,3 +1,5 @@
+/* Polices d'écriture */
+
 @font-face {
     font-family: "TAN Pearl";
     src: url("../fonts/tan-pearl.otf") format("opentype");
@@ -5,8 +7,9 @@
     font-style: normal;
 }
 
+/* Corps de base : polices + fond de page */
+
 body {
-    margin: 0;
     min-height: 100vh;
     background-image:
         radial-gradient(circle at center,
@@ -15,7 +18,8 @@ body {
             rgba(0, 0, 0, 1) 100%),
         url("../assets/background.JPG");
     background-size: cover;
-    background-position: center;
+    background-position: center;  /* centrée */
+    background-repeat: no-repeat; /* pas de répétition */
     font-family: Arial, Helvetica, sans-serif;
     color: white;
 }
