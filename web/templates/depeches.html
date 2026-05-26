@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>GossYp Girl</title>
+
+    <link rel="stylesheet" href="./static/styles.css">
+
+    <script>
+      fetch("./static/header.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("header").innerHTML = html);
+    </script>
+
+    <script>
+      fetch("./static/left-box.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("left-box").innerHTML = html);
+    </script>
+  </head>
+  
+  <body>
+    <div id="header"></div>
+
+    <div class="container">
+        <div id="left-box"></div>
+
+        <div class="right-box">
+            <h1>la dépêche du moment</h1>
+
+        </div>
+    </div>
+
+  </body>
+</html>
