@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="/static/styles.css">
 
     <script>
-      fetch("static/header.html")
+      fetch("/head/header.html")
         .then(r => r.text())
         .then(html => document.getElementById("header").innerHTML = html);
     </script>
 
     <script>
-      fetch("static/left-box.html")
+      fetch("/head/left-box.html")
         .then(r => r.text())
         .then(html => document.getElementById("left-box").innerHTML = html);
     </script>

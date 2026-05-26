@@ -24,9 +24,7 @@ func Home(
 	}
 
 	tmpl := template.Must(
-		template.ParseFiles(
-			"web/templates/index.html",
-		),
+		template.ParseFiles("web/templates/index.html"),
 	)
 
 	tmpl.Execute(
