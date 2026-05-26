@@ -16,6 +16,7 @@ func main() {
 	db.InitDB()
 	db.CreateTables()
 	db.CreateAdminIfNotExists()
+	db.SeedCategories()
 
 	http.HandleFunc("/register", handlers.Register)
 	http.HandleFunc("/login", handlers.Login)

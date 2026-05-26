@@ -4,14 +4,28 @@ import (
 	"b1_projet-JS_Forum/internal/models"
 )
 
-func CreatePost(userID int, title, content, imagePath string) error {
+func CreatePost(userID int, title string, content string, imagePath string, categoryID int) error {
 
 	query := `
-	INSERT INTO posts(user_id, title, content, image_path)
-	VALUES (?, ?, ?, ?)
+	INSERT INTO posts (
+		user_id,
+		title,
+		content,
+		image_path,
+		category_id
+	)
+	VALUES (?, ?, ?, ?, ?)
 	`
 
-	_, err := DB.Exec(query, userID, title, content, imagePath)
+	_, err := DB.Exec(
+		query,
+		userID,
+		title,
+		content,
+		imagePath,
+		categoryID,
+	)
+
 	return err
 }
 

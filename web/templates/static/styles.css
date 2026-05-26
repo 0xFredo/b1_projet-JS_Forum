@@ -40,13 +40,13 @@ strong {
     color:#e1c56a;
 }
 
-a {
+a:not(.filters a) {
     width: 96px;
     height: 96px;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    filter: invert(1); /* transforme noir → blanc */
+    filter: invert(1);
 }
 
 .profile-btn {
@@ -276,4 +276,27 @@ button:hover {
 /* BOUTON */
 .message-form button {
     align-self: flex-end;
+}
+
+/*categorie*/
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filters a {
+    padding: 8px 14px;
+    background: #FFDF00;
+    color: black;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.filters a:hover {
+    background: black;
+    color: white;
 }

@@ -140,60 +140,69 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method == "POST" {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", 405)
+		return
+	}
 
-		cookie, err := r.Cookie("session_token")
-		if err != nil {
-			http.Error(w, "Not logged in", 401)
-			return
-		}
+	cookie, err := r.Cookie("session_token")
+	if err != nil {
+		http.Error(w, "Not logged in", 401)
+		return
+	}
 
-		userID, err := db.GetUserIDFromToken(cookie.Value)
-		if err != nil {
-			http.Error(w, "Invalid session", 401)
-			return
-		}
+	userID, err := db.GetUserIDFromToken(cookie.Value)
+	if err != nil {
+		http.Error(w, "Invalid session", 401)
+		return
+	}
 
-		title := r.FormValue("title")
-		content := r.FormValue("content")
+	title := r.FormValue("title")
+	content := r.FormValue("content")
+	categoryIDStr := r.FormValue("category_id")
 
-		// image
-		imagePath := ""
+	if title == "" || content == "" {
+		http.Error(w, "Missing fields", 400)
+		return
+	}
 
-		file, header, err := r.FormFile("image")
+	categoryID, err := strconv.Atoi(categoryIDStr)
+	if err != nil {
+		http.Error(w, "Invalid category", 400)
+		return
+	}
 
-		if err == nil {
+	imagePath := ""
 
-			defer file.Close()
+	file, header, err := r.FormFile("image")
+	if err == nil {
+		defer file.Close()
 
-			filename := uuid.New().String() +
-				filepath.Ext(header.Filename)
+		filename := uuid.New().String() + filepath.Ext(header.Filename)
+		imagePath = "uploads/" + filename
 
-			imagePath = "uploads/" + filename
-
-			dst, err := os.Create(imagePath)
-			if err != nil {
-				http.Error(w, err.Error(), 500)
-				return
-			}
-
-			defer dst.Close()
-
-			io.Copy(dst, file)
-		}
-
-		err = db.CreatePost(
-			userID,
-			title,
-			content,
-			imagePath,
-		)
-
+		dst, err := os.Create(imagePath)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
 		}
+		defer dst.Close()
 
-		w.Write([]byte("Post créé"))
+		io.Copy(dst, file)
 	}
+
+	err = db.CreatePost(
+		userID,
+		title,
+		content,
+		imagePath,
+		categoryID,
+	)
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
