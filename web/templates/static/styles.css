@@ -84,6 +84,7 @@ a, a:link, a:visited, a:hover, a:active {
 }
 
 h1 {
+    color: white;
     font-weight: 1;
 }
 
@@ -176,7 +177,7 @@ h1 {
 /* TITRES */
 .post-container h1 {
     margin-top: 0;
-    color: #333;
+    color: white;
 }
 
 .post-container h2 {
@@ -187,7 +188,7 @@ h1 {
 /* POST META */
 .post-container p {
     line-height: 1.5;
-    color: #333;
+    color: white;
 }
 
 /* IMAGE POST */

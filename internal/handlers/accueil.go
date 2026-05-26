@@ -2,29 +2,14 @@ package handlers
 
 import (
 	"html/template"
-	"log"
 	"net/http"
-	"strings"
 
 	"b1_projet-JS_Forum/internal/db"
-	"b1_projet-JS_Forum/internal/models"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
 
-	cat := strings.ToLower(r.URL.Query().Get("cat"))
-
-	log.Println("FILTER =", cat)
-
-	var posts []models.Post
-	var err error
-
-	if cat == "" {
-		posts, err = db.GetAllPosts()
-	} else {
-		posts, err = db.GetPostsByCategory(cat)
-	}
-
+	posts, err := db.GetPostsByCategory("general")
 	if err != nil {
 		ErrorAlert(w, err.Error(), 500)
 		return
@@ -34,8 +19,16 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(w, posts)
 }
 
-func Profile(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "web/templates/profile.html")
+func Depeches(w http.ResponseWriter, r *http.Request) {
+
+	posts, err := db.GetPostsByCategory("depeches")
+	if err != nil {
+		ErrorAlert(w, err.Error(), 500)
+		return
+	}
+
+	tmpl := template.Must(template.ParseFiles("web/templates/depeches.html"))
+	tmpl.Execute(w, posts)
 }
 
 func SendMessage(w http.ResponseWriter, r *http.Request) {

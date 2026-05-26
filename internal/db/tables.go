@@ -1,6 +1,9 @@
 package db
 
-import "log"
+import (
+	"log"
+	"strings"
+)
 
 func CreateTables() {
 
@@ -81,6 +84,8 @@ func CreateTables() {
 
     contenu TEXT NOT NULL,
 
+    file_path TEXT,
+
     date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY(user_id) REFERENCES users(id)
@@ -91,6 +96,11 @@ func CreateTables() {
 
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	_, err = DB.Exec("ALTER TABLE messages ADD COLUMN file_path TEXT")
+	if err != nil && !strings.Contains(err.Error(), "duplicate column name") {
+		log.Println("Migration messages.file_path:", err)
 	}
 
 	log.Println("Tables creé")

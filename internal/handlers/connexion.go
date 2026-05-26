@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -16,6 +17,7 @@ import (
 )
 
 func Register(w http.ResponseWriter, r *http.Request) {
+	NoCache(w)
 
 	if r.Method == "GET" {
 		http.ServeFile(w, r, "web/templates/profile.html")
@@ -51,11 +53,28 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		user, err := db.GetUserByEmail(email)
+		if err != nil {
+			ErrorAlert(w, err.Error(), 500)
+			return
+		}
+
+		cookie := uuid.New().String()
+
+		err = db.CreateSession(user.ID, cookie)
+		if err != nil {
+			ErrorAlert(w, err.Error(), 500)
+			return
+		}
+
+		auth.SetSessionCookie(w, cookie)
+
 		SuccessAlert(w, "user créé", "/")
 	}
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	NoCache(w)
 
 	if r.Method == "GET" {
 		http.ServeFile(w, r, "web/templates/profile.html")
@@ -136,12 +155,23 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 func CreatePost(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
+		// Vérifie les permissions pour GET
+		if !CheckPermissionMultiple(r, "admin", "commere") {
+			ErrorAlert(w, "Forbidden", 403)
+			return
+		}
 		http.ServeFile(w, r, "web/templates/admin/create_post.html")
 		return
 	}
 
 	if r.Method != "POST" {
 		ErrorAlert(w, "Method not allowed", 405)
+		return
+	}
+
+	// Vérifie les permissions pour POST
+	if !CheckPermissionMultiple(r, "admin", "commere") {
+		ErrorAlert(w, "Forbidden", 403)
 		return
 	}
 
@@ -157,16 +187,32 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	role, err := db.GetUserRole(userID)
+	if err != nil {
+		ErrorAlert(w, "Erreur role", 500)
+		return
+	}
+
+	categoryName := ""
+	switch role {
+	case "admin":
+		categoryName = "general"
+	case "commere":
+		categoryName = "depeches"
+	default:
+		ErrorAlert(w, "Forbidden", 403)
+		return
+	}
+
 	title := r.FormValue("title")
 	content := r.FormValue("content")
-	categoryIDStr := r.FormValue("category_id")
 
 	if title == "" || content == "" {
 		ErrorAlert(w, "Missing fields", 400)
 		return
 	}
 
-	categoryID, err := strconv.Atoi(categoryIDStr)
+	categoryID, err := db.GetCategoryIDByName(categoryName)
 	if err != nil {
 		ErrorAlert(w, "Invalid category", 400)
 		return
@@ -205,4 +251,137 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func Profile(w http.ResponseWriter, r *http.Request) {
+	NoCache(w)
+
+	_, err := GetUserIDFromCookie(r)
+	if err != nil {
+		http.ServeFile(w, r, "web/templates/profile.html")
+		return
+	}
+
+	http.ServeFile(w, r, "web/templates/profile-logged.html")
+}
+
+func ChangePassword(w http.ResponseWriter, r *http.Request) {
+	NoCache(w)
+
+	if r.Method != "POST" {
+		ErrorAlert(w, "Method not allowed", 405)
+		return
+	}
+
+	userID, err := GetUserIDFromCookie(r)
+	if err != nil {
+		ErrorAlert(w, "Not logged in", 401)
+		return
+	}
+
+	oldPassword := r.FormValue("old_password")
+	newPassword := r.FormValue("new_password")
+	confirmPassword := r.FormValue("confirm_password")
+
+	// Vérifie que les mots de passe correspondent
+	if newPassword != confirmPassword {
+		ErrorAlert(w, "Les mots de passe ne correspondent pas", 400)
+		return
+	}
+
+	// Récupère l'ancien hash depuis la DB
+	var oldHash string
+	err = db.DB.QueryRow("SELECT mdp_hash FROM users WHERE id = ?", userID).Scan(&oldHash)
+	if err != nil {
+		ErrorAlert(w, "Utilisateur non trouvé", 400)
+		return
+	}
+
+	// Vérifie l'ancien mot de passe
+	err = bcrypt.CompareHashAndPassword([]byte(oldHash), []byte(oldPassword))
+	if err != nil {
+		ErrorAlert(w, "Ancien mot de passe incorrect", 401)
+		return
+	}
+
+	// Hash le nouveau mot de passe
+	newHash, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		ErrorAlert(w, "Erreur lors du hash", 500)
+		return
+	}
+
+	// Met à jour le mot de passe en DB
+	err = db.UpdatePassword(userID, string(newHash))
+	if err != nil {
+		ErrorAlert(w, "Erreur lors de la mise à jour", 500)
+		return
+	}
+
+	SuccessAlert(w, "Mot de passe changé avec succès", "/")
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	NoCache(w)
+
+	cookie, err := r.Cookie("session_token")
+	if err == nil {
+		db.DeleteSession(cookie.Value)
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:   "session_token",
+		Value:  "",
+		Path:   "/",
+		MaxAge: -1,
+	})
+
+	SuccessAlert(w, "Déconnecté", "/profile")
+}
+
+func Tips(w http.ResponseWriter, r *http.Request) {
+	role, err := GetUserRoleFromCookie(r)
+	if err != nil {
+		http.Redirect(w, r, "/send_message", http.StatusSeeOther)
+		return
+	}
+
+	switch role {
+	case "admin":
+		http.Redirect(w, r, "/admin", http.StatusSeeOther)
+	case "commere":
+		http.Redirect(w, r, "/commere", http.StatusSeeOther)
+	default:
+		http.Redirect(w, r, "/send_message", http.StatusSeeOther)
+	}
+}
+
+// APIUserRole retourne le rôle de l'utilisateur connecté en JSON
+func APIUserRole(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	userID, err := GetUserIDFromCookie(r)
+	if err != nil {
+		// Pas connecté
+		w.Write([]byte(`{"role": null}`))
+		return
+	}
+
+	role, err := db.GetUserRole(userID)
+	if err != nil {
+		w.Write([]byte(`{"role": null}`))
+		return
+	}
+
+	fmt.Fprintf(w, `{"role": "%s"}`, role)
+}
+
+func CommereCreatePost(w http.ResponseWriter, r *http.Request) {
+	// Vérifie que l'utilisateur a le rôle commere
+	if !CheckPermission(r, "commere") {
+		ErrorAlert(w, "Forbidden", 403)
+		return
+	}
+
+	http.ServeFile(w, r, "web/templates/commere/create_post.html")
 }

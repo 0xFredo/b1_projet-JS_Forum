@@ -56,6 +56,30 @@ func GetUserByEmail(email string) (models.User, error) {
 	return user, err
 }
 
+func GetUserByID(id int) (models.User, error) {
+
+	var user models.User
+
+	query := `
+	SELECT id, identifiant, email, mdp_hash, role
+	FROM users
+	WHERE id = ?
+	`
+
+	err := DB.QueryRow(
+		query,
+		id,
+	).Scan(
+		&user.ID,
+		&user.Identifiant,
+		&user.Email,
+		&user.Mdp,
+		&user.Role,
+	)
+
+	return user, err
+}
+
 func DeleteUserByID(id int) error {
 
 	query := `
@@ -138,6 +162,26 @@ func UpdateUserRole(
 	_, err := DB.Exec(
 		query,
 		role,
+		userID,
+	)
+
+	return err
+}
+
+func UpdatePassword(
+	userID int,
+	newPasswordHash string,
+) error {
+
+	query := `
+	UPDATE users
+	SET mdp_hash = ?
+	WHERE id = ?
+	`
+
+	_, err := DB.Exec(
+		query,
+		newPasswordHash,
 		userID,
 	)
 

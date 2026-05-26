@@ -6,15 +6,17 @@ func CreateMessage(
 	userID int,
 	sujet string,
 	contenu string,
+	filePath string,
 ) error {
 
 	query := `
 	INSERT INTO messages(
 		user_id,
 		sujet,
-		contenu
+		contenu,
+		file_path
 	)
-	VALUES (?, ?, ?)
+	VALUES (?, ?, ?, ?)
 	`
 
 	_, err := DB.Exec(
@@ -22,6 +24,7 @@ func CreateMessage(
 		userID,
 		sujet,
 		contenu,
+		filePath,
 	)
 
 	return err
@@ -34,6 +37,7 @@ func GetAllMessages() ([]models.Message, error) {
 		messages.id,
 		messages.sujet,
 		messages.contenu,
+		COALESCE(messages.file_path, ''),
 		messages.date_creation,
 		users.identifiant
 	FROM messages
@@ -59,6 +63,7 @@ func GetAllMessages() ([]models.Message, error) {
 			&m.ID,
 			&m.Sujet,
 			&m.Contenu,
+			&m.FilePath,
 			&m.DateCreation,
 			&m.AuthorName,
 		)

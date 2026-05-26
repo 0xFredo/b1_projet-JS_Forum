@@ -9,8 +9,6 @@ func SeedCategories() {
 
 	categories := []string{
 		"general",
-		"photos",
-		"soirees",
 		"depeches",
 	}
 
@@ -26,7 +24,44 @@ func SeedCategories() {
 		}
 	}
 
+	generalID, err := GetCategoryIDByName("general")
+	if err != nil {
+		log.Println("Category cleanup error:", err)
+		return
+	}
+
+	_, err = DB.Exec(`
+		UPDATE posts
+		SET category_id = ?
+		WHERE category_id IN (
+			SELECT id
+			FROM categories
+			WHERE nom IN ('photos', 'soirees')
+		)
+	`, generalID)
+
+	if err != nil {
+		log.Println("Category cleanup error:", err)
+	}
+
+	_, err = DB.Exec("DELETE FROM categories WHERE nom IN ('photos', 'soirees')")
+	if err != nil {
+		log.Println("Category cleanup error:", err)
+	}
+
 	log.Println("Categories seed OK")
+}
+
+func GetCategoryIDByName(name string) (int, error) {
+
+	var id int
+
+	err := DB.QueryRow(
+		"SELECT id FROM categories WHERE nom = ?",
+		name,
+	).Scan(&id)
+
+	return id, err
 }
 
 func GetPostsByCategory(cat string) ([]models.Post, error) {

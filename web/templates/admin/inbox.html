@@ -4,91 +4,125 @@
     <meta charset="utf-8">
     <title>GossYp Girl</title>
 
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="./static/styles.css">
 
+    <script>
+      fetch("./static/header.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("header").innerHTML = html);
+    </script>
+
+    <script>
+      fetch("./static/left-box.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("left-box").innerHTML = html);
+    </script>
   </head>
 
-<body>
+  <body>
+    <div id="header"></div>
 
-<div class="post-container">
+    <div class="container">
 
-    <h1>Messages utilisateurs</h1>
 
-    <a href="/create-post" class="admin-button">
-        + Créer un post
-    </a>
+        <div class="post-container">
+            <a href="/create-post" class="admin-button">+ Créer un post</a>
 
-    <br><br>
+                    <h1>Messages utilisateurs</h1>
 
-    {{ range .Messages }}
 
-        <div class="comment">
+                    <br><br>
 
-            <p>
-                <span class="author-badge">
-                    {{ .AuthorName }}
-                </span>
-            </p>
+                    {{ range .Messages }}
 
-            <h3>
-                {{ .Sujet }}
-            </h3>
+                        <div class="comment">
 
-            <p>
-                {{ .Contenu }}
-            </p>
+                            <p>
+                                <span class="author-badge">
+                                    {{ .AuthorName }}
+                                </span>
+                            </p>
 
-            <small>
-                {{ .DateCreation.Format "02/01/2006 à 15:04" }}
-            </small>
+                            <h3>
+                                {{ .Sujet }}
+                            </h3>
 
+                            <p>
+                                {{ .Contenu }}
+                            </p>
+
+                            {{ if .HasFile }}
+                                <p>
+                                    Pièce jointe :
+                                </p>
+
+                                {{ if .IsImageFile }}
+                                    <img
+                                        src="/{{ .FilePath }}"
+                                        width="300">
+                                {{ else }}
+                                    <a href="/{{ .FilePath }}" target="_blank">
+                                        Voir la pièce jointe
+                                    </a>
+                                {{ end }}
+                            {{ end }}
+
+                            <small>
+                                {{ .DateCreation.Format "02/01/2006 à 15:04" }}
+                            </small>
+
+                        </div>
+
+                        <br>
+
+                    {{ end }}
+
+                </div>
+
+                <div class="post-container">
+
+
+                <h1>Utilisateurs</h1>
+
+                {{ range .Users }}
+
+                <div class="comment">
+
+                    <p>
+                        {{ .Identifiant }}
+                    </p>
+
+                    <p>
+                        Role :
+                        {{ .Role }}
+                    </p>
+
+                    {{ if eq .Role "user" }}
+
+                    <form
+                        action="/admin/promote"
+                        method="POST">
+
+                        <input
+                            type="hidden"
+                            name="user_id"
+                            value="{{ .ID }}">
+
+                        <button type="submit">
+                            Promouvoir commère
+                        </button>
+
+                    </form>
+
+                    {{ end }}
+
+                </div>
+
+                <br>
+
+                {{ end }}
         </div>
-
-        <br>
-
-    {{ end }}
-
-</div>
-
-<h1>Utilisateurs</h1>
-
-{{ range .Users }}
-
-<div class="comment">
-
-    <p>
-        {{ .Identifiant }}
-    </p>
-
-    <p>
-        Role :
-        {{ .Role }}
-    </p>
-
-    {{ if eq .Role "user" }}
-
-    <form
-        action="/admin/promote"
-        method="POST">
-
-        <input
-            type="hidden"
-            name="user_id"
-            value="{{ .ID }}">
-
-        <button type="submit">
-            Promouvoir commère
-        </button>
-
-    </form>
-
-    {{ end }}
-
-</div>
-
-<br>
-
-{{ end }}
+        </div>
 
 </body>
 </html>

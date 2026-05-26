@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>GossYp Girl</title>
+
+    <link rel="stylesheet" href="./static/styles.css">
+
+    <script>
+      fetch("./static/header.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("header").innerHTML = html);
+    </script>
+
+    <script>
+      fetch("./static/left-box.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("left-box").innerHTML = html);
+    </script>
+  </head>
+  
+  <body>
+    <div id="header"></div>
+
+    <div class="container">
+        <div id="left-box"></div>
+
+        <div class="right-box">
+            <h1>Modifier mon mot de passe</h1>
+            <form action="/change-password" method="POST">
+                <div>
+                    <label>Ancien mot de passe :</label>
+                    <input 
+                        type="password"
+                        name="old_password"
+                        placeholder="Ancien mot de passe"
+                        required
+                    >
+                </div>
+                <div>
+                    <label>Nouveau mot de passe :</label>
+                    <input 
+                        type="password"
+                        name="new_password"
+                        placeholder="Nouveau mot de passe"
+                        required
+                    >
+                </div>
+                <div>
+                    <label>Confirmer le mot de passe :</label>
+                    <input 
+                        type="password"
+                        name="confirm_password"
+                        placeholder="Confirmer le mot de passe"
+                        required
+                    >
+                </div>
+                <button type="submit">Changer le mot de passe</button>
+            </form>
+
+            <form action="/logout" method="POST" style="margin-top: 30px;">
+                <button type="submit" style="background-color: #999;">Se déconnecter</button>
+            </form>
+        </div>
+    </div>
+
+  </body>
+</html>

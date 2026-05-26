@@ -16,9 +16,18 @@ func GetUserIDFromToken(token string) (int, error) {
 	var userID int
 
 	err := DB.QueryRow(
-		"SELECT user_id FROM sessions WHERE token = ?",
+		"SELECT user_id FROM sessions WHERE token = ? AND expires_at > datetime('now')",
 		token,
 	).Scan(&userID)
 
 	return userID, err
+}
+
+func DeleteSession(token string) error {
+	_, err := DB.Exec(
+		"DELETE FROM sessions WHERE token = ?",
+		token,
+	)
+
+	return err
 }
