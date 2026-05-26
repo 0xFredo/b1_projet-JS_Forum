@@ -40,7 +40,13 @@ strong {
     color:#e1c56a;
 }
 
-a {
+a, a:link, a:visited, a:hover, a:active {
+    color: inherit;
+    text-decoration: none;
+}
+
+.profile-btn {
+    background-image: url("/web/assets/profile.png");
     width: 96px;
     height: 96px;
     background-size: contain;
@@ -49,12 +55,14 @@ a {
     filter: invert(1); /* transforme noir → blanc */
 }
 
-.profile-btn {
-    background-image: url("/web/assets/profile.png");
-}
-
 .tips-btn {
     background-image: url("/web/assets/message.png");
+    width: 96px;
+    height: 96px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: invert(1); /* transforme noir → blanc */
 }
 
 /* Conteneur principal */
