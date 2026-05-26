@@ -1,68 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>GossYp Girl</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <script>
+      fetch("/static/header.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("header").innerHTML = html);
+    </script>
+
+    <script>
+      fetch("/static/left-box.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("left-box").innerHTML = html);
+    </script>
+  </head>
 <body>
 
-<h1>{{ .Post.Title }}</h1>
+<div class="post-container">
 
-<p>
-    Posté par :
-    {{ .Post.AuthorName }}
-</p>
-
-<p>{{ .Post.Content }}</p>
-
-{{ if .Post.ImagePath }}
-<img
-    src="/{{ .Post.ImagePath }}"
-    width="300">
-{{ end }}
-
-<hr>
-
-<h2>Commentaires</h2>
-
-{{ range .Comments }}
+    <!-- ===== POST ===== -->
+    <h1>{{ .Post.Title }}</h1>
 
     <p>
-        <strong>
-            {{ .AuthorName }}
-        </strong>
+        Posté par : {{ .Post.AuthorName }}
     </p>
 
     <p>
-        {{ .Content }}
+        {{ .Post.Content }}
     </p>
 
-    <small>
-        {{ .CreatedAt.Format "02/01/2006 à 15:04" }}
-    </small>
+    {{ if .Post.ImagePath }}
+        <img src="/{{ .Post.ImagePath }}" width="300">
+    {{ end }}
 
     <hr>
 
-{{ end }}
+    <!-- ===== COMMENTAIRES ===== -->
+    <h2>Commentaires</h2>
 
-<h2>Ajouter un commentaire</h2>
+    {{ range .Comments }}
 
-<form
-    action="/create-comment"
-    method="POST">
+        <div class="comment">
 
-    <input
-        type="hidden"
-        name="post_id"
-        value="{{ .Post.ID }}">
+            <p>{{ .AuthorName }}</p>
 
-    <textarea
-        name="content"
-        required></textarea>
+            <p>{{ .Content }}</p>
 
-    <br><br>
+            <small>
+                {{ .CreatedAt.Format "02/01/2006 à 15:04" }}
+            </small>
 
-    <button type="submit">
-        Commenter
-    </button>
+        </div>
 
-</form>
+    {{ end }}
+
+    <hr>
+
+    <!-- ===== FORM COMMENTAIRE ===== -->
+    <h2>Ajouter un commentaire</h2>
+
+    <form action="/create-comment" method="POST">
+
+        <input type="hidden" name="post_id" value="{{ .Post.ID }}">
+
+        <textarea
+            name="content"
+            placeholder="Écrire un commentaire..."
+            required>
+        </textarea>
+
+        <button type="submit">
+            Commenter
+        </button>
+
+    </form>
+
+    <form action="/" method="get">
+        <button type="submit">
+            Retour accueil
+        </button>
+    </form>
+
+</div>
 
 </body>
 </html>

@@ -81,3 +81,151 @@ a {
   padding: 20px;
   border-radius: 10px;
 }
+
+/*post*/
+
+
+.post {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease;
+}
+
+.post:hover {
+    transform: translateY(-3px);
+}
+
+/* TITLE */
+.post h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.post content{
+    line-height: 1.5;
+    color: black;
+    margin: 10px 0;
+}
+
+
+/* CONTENT */
+.post p {
+    line-height: 1.5;
+    color: #ff4d8d;
+    margin: 10px 0;
+}
+
+/* IMAGE */
+.post img {
+    margin-top: 10px;
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* DATE */
+.post p:last-of-type {
+    font-size: 12px;
+    color: #888;
+}
+
+/* BUTTON LINK */
+.post a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #38b6ff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.post a:hover {
+    background: #1e9fe0;
+}
+
+/*page commentaire */
+
+/* CONTAINER GLOBAL */
+.post-container {
+    width: 60%;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* TITRES */
+.post-container h1 {
+    margin-top: 0;
+    color: #333;
+}
+
+.post-container h2 {
+    margin-top: 30px;
+    color: pink;
+}
+
+/* POST META */
+.post-container p {
+    line-height: 1.5;
+    color: #333;
+}
+
+/* IMAGE POST */
+.post-container img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* COMMENTAIRES */
+.comment {
+    background: #f9f9f9;
+    padding: 10px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid #FFDF00;
+}
+
+.comment strong {
+    color: #ff4d8d;
+}
+
+.comment small {
+    color: #888;
+}
+
+/* FORMULAIRE COMMENTAIRE */
+form {
+    margin-top: 20px;
+}
+
+textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    resize: none;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background: #FFDF00;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: black;
+    color: white;
+}
+
