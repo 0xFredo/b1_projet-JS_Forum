@@ -32,3 +32,23 @@ func Home(
 		posts,
 	)
 }
+
+func Profile(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "web/templates/profile.html")
+}
+
+func SendMessage(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "web/templates/send_message.html")
+}
+
+func Archive(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "web/templates/archive.html")
+}
+
+func Photos(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "web/templates/photos.html")
+}
+
+func Soirees(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "web/templates/soirees.html")
+}
