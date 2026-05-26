@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <title>GossYp Girl</title>
 
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="./static/styles.css">
 
     <script>
-      fetch("/static/header.html")
+      fetch("./static/header.html")
         .then(r => r.text())
         .then(html => document.getElementById("header").innerHTML = html);
     </script>
 
     <script>
-      fetch("/static/left-box.html")
+      fetch("./static/left-box.html")
         .then(r => r.text())
         .then(html => document.getElementById("left-box").innerHTML = html);
     </script>
