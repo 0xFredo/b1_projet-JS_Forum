@@ -3,31 +3,48 @@
   <head>
     <meta charset="utf-8">
     <title>GossYp Girl</title>
-    <link rel="stylesheet" href="../styles.css">
+
+    <link rel="stylesheet" href="./styles.css">
+
+    <script>
+      fetch("static/header.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("header").innerHTML = html);
+    </script>
+
+    <script>
+      fetch("static/left-box.html")
+        .then(r => r.text())
+        .then(html => document.getElementById("left-box").innerHTML = html);
+    </script>
   </head>
+  
   <body>
-    <header>
-        <a href="../send_message.html" class="tips-btn"></a>
-        <strong>gossYp girl</strong>
-        <a href="../profile.html" class="profile-btn"></a>
-    </header>
-    <h1>Créer un post</h1>
-    <form action="/create-post" method="POST" enctype="multipart/form-data">
+    <div id="header"></div>
 
-        <input type="text" name="title" placeholder="Titre" required>
-        <br><br>
+    <div class="container">
+        <div id="left-box"></div>
 
-        <textarea name="content" placeholder="Contenu" required></textarea>
-        <br><br>
+        <div class="right-box">
+            <h1>Créer un post</h1>
+            <form action="/create-post" method="POST" enctype="multipart/form-data">
 
-        <input type="file" name="image">
-        <br><br>
+                <input type="text" name="title" placeholder="Titre" required>
+                <br><br>
 
-        <button type="submit">
-            Publier
-        </button>
+                <textarea name="content" placeholder="Contenu" required></textarea>
+                <br><br>
 
-    </form>
+                <input type="file" name="image">
+                <br><br>
 
-</body>
+                <button type="submit">
+                    Publier
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+  </body>
 </html>
