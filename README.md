@@ -26,12 +26,6 @@ Accédez aux dernières dépêches publiées par les meilleurs diffuseurs d'info
 
 Bien sûr ce n'est pas aussi croustillant que les infos que je vous relaie, mais ça dépanne toujours....
 
-### — Archives —
-
-Vous arrivez en cours de route ?
-
-Pas de problème ! Attrapez du pop-corn et naviguez dans les archives... croyez-moi, elles valent le coup !
-
 ### — Profil —
 
 Choisissez de bons mots de passe mes followers ! Vous ne voudriez pas que votre profil tombe entre de mauvaise mains !!
