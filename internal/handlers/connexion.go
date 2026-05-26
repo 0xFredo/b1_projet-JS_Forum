@@ -18,7 +18,7 @@ import (
 func Register(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
-		http.ServeFile(w, r, "templates/profile.html")
+		http.ServeFile(w, r, "web/templates/profile.html")
 		return
 	}
 
@@ -56,7 +56,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 func Login(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
-		http.ServeFile(w, r, "templates/profile.html")
+		http.ServeFile(w, r, "web/templates/profile.html")
 		return
 	}
 
@@ -134,7 +134,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 func CreatePost(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "GET" {
-		http.ServeFile(w, r, "templates/create_post.html")
+		http.ServeFile(w, r, "web/templates/admin/create_post.html")
 		return
 	}
 
