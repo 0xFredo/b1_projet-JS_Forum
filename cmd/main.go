@@ -15,6 +15,7 @@ func main() {
 
 	db.InitDB()
 	db.CreateTables()
+	db.CreateAdminIfNotExists()
 
 	http.HandleFunc("/register", handlers.Register)
 	http.HandleFunc("/login", handlers.Login)
@@ -32,6 +33,9 @@ func main() {
 	http.HandleFunc("/create-comment", handlers.CreateComment)
 	http.HandleFunc("/", handlers.Home)
 	http.HandleFunc("/all-post", handlers.Home)
+	http.HandleFunc("/send-message", handlers.SendMessageAdmin)
+	http.HandleFunc("/admin", handlers.AdminPage)
+	http.HandleFunc("/admin/promote", handlers.PromoteUser)
 
 	// Ouvre automatiquement le navigateur
 	go func() {

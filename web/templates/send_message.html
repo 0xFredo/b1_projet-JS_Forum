@@ -27,6 +27,37 @@
 
         <div class="right-box">
             <h1>tips</h1>
+
+            <div class="post-container">
+
+    <h1 class="message-form-title">
+    Envoyer un message aux admins
+</h1>
+
+<form
+    action="/send-message"
+    method="POST"
+    class="message-form">
+
+    <input
+        type="text"
+        name="sujet"
+        placeholder="Sujet"
+        required>
+
+    <textarea
+        name="contenu"
+        placeholder="Votre message..."
+        required>
+    </textarea>
+
+    <button type="submit">
+        Envoyer
+    </button>
+
+</form>
+
+        </div>
         </div>
     </div>
 

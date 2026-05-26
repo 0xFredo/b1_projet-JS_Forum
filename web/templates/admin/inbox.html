@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>GossYp Girl</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+  </head>
+
+<body>
+
+<div class="post-container">
+
+    <h1>Messages utilisateurs</h1>
+
+    <a href="/create-post" class="admin-button">
+        + Créer un post
+    </a>
+
+    <br><br>
+
+    {{ range .Messages }}
+
+        <div class="comment">
+
+            <p>
+                <span class="author-badge">
+                    {{ .AuthorName }}
+                </span>
+            </p>
+
+            <h3>
+                {{ .Sujet }}
+            </h3>
+
+            <p>
+                {{ .Contenu }}
+            </p>
+
+            <small>
+                {{ .DateCreation.Format "02/01/2006 à 15:04" }}
+            </small>
+
+        </div>
+
+        <br>
+
+    {{ end }}
+
+</div>
+
+<h1>Utilisateurs</h1>
+
+{{ range .Users }}
+
+<div class="comment">
+
+    <p>
+        {{ .Identifiant }}
+    </p>
+
+    <p>
+        Role :
+        {{ .Role }}
+    </p>
+
+    {{ if eq .Role "user" }}
+
+    <form
+        action="/admin/promote"
+        method="POST">
+
+        <input
+            type="hidden"
+            name="user_id"
+            value="{{ .ID }}">
+
+        <button type="submit">
+            Promouvoir commère
+        </button>
+
+    </form>
+
+    {{ end }}
+
+</div>
+
+<br>
+
+{{ end }}
+
+</body>
+</html>

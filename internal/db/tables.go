@@ -70,6 +70,19 @@ func CreateTables() {
 
 		FOREIGN KEY(user_id) REFERENCES users(id)
 	);
+	CREATE TABLE IF NOT EXISTS messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    user_id INTEGER NOT NULL,
+
+    sujet TEXT NOT NULL,
+
+    contenu TEXT NOT NULL,
+
+    date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
 	`
 
 	_, err := DB.Exec(query)
