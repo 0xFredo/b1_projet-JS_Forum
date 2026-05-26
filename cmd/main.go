@@ -22,7 +22,6 @@ func main() {
 	http.HandleFunc("/create-post", handlers.CreatePost)
 	http.HandleFunc("/profile", handlers.Profile)
 	http.HandleFunc("/send_message", handlers.SendMessage)
-	http.HandleFunc("/archive", handlers.Archive)
 	http.HandleFunc("/photos", handlers.Photos)
 	http.HandleFunc("/soirees", handlers.Soirees)
 	http.Handle("/uploads/", http.StripPrefix("/uploads/", http.FileServer(http.Dir("uploads"))))

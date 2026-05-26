@@ -41,10 +41,6 @@ func SendMessage(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "web/templates/send_message.html")
 }
 
-func Archive(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "web/templates/archive.html")
-}
-
 func Photos(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "web/templates/photos.html")
 }
