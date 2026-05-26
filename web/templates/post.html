@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>{{ .Post.Title }}</h1>
+
+<p>
+    Posté par :
+    {{ .Post.AuthorName }}
+</p>
+
+<p>{{ .Post.Content }}</p>
+
+{{ if .Post.ImagePath }}
+<img
+    src="/{{ .Post.ImagePath }}"
+    width="300">
+{{ end }}
+
+<hr>
+
+<h2>Commentaires</h2>
+
+{{ range .Comments }}
+
+    <p>
+        <strong>
+            {{ .AuthorName }}
+        </strong>
+    </p>
+
+    <p>
+        {{ .Content }}
+    </p>
+
+    <small>
+        {{ .CreatedAt.Format "02/01/2006 à 15:04" }}
+    </small>
+
+    <hr>
+
+{{ end }}
+
+<h2>Ajouter un commentaire</h2>
+
+<form
+    action="/create-comment"
+    method="POST">
+
+    <input
+        type="hidden"
+        name="post_id"
+        value="{{ .Post.ID }}">
+
+    <textarea
+        name="content"
+        required></textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Commenter
+    </button>
+
+</form>
+
+</body>
+</html>

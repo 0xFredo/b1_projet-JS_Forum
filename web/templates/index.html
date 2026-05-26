@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>GossYp Girl</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
   </head>
   <body>
     <header>
@@ -31,8 +31,49 @@
         </div>
 
         <div class="right-box">
-            <!-- contenu du bloc flexible -->
+
+    {{ range . }}
+
+        <div class="post">
+
+            <h2>
+                {{ .Title }}
+            </h2>
+
+            <p>
+                Posté par :
+                <strong>
+                    {{ .AuthorName }}
+                </strong>
+            </p>
+
+            <p>
+                {{ .Content }}
+            </p>
+
+            {{ if .ImagePath }}
+
+                <img
+                    src="/{{ .ImagePath }}"
+                    width="300">
+
+            {{ end }}
+
+            <p>
+                {{ .CreatedAt.Format "02/01/2006 à 15:04" }}
+            </p>
+
+            <a href="/post?id={{ .ID }}">
+                Voir le post
+            </a>
+
         </div>
+
+        <hr>
+
+    {{ end }}
+
+</div>
     </div>
 
   </body>

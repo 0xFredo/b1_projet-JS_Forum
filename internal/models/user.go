@@ -5,4 +5,5 @@ type User struct {
 	Identifiant string
 	Email       string
 	Mdp         string
+	Role        string
 }
