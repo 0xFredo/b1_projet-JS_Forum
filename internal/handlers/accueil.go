@@ -7,12 +7,19 @@ import (
 	"b1_projet-JS_Forum/internal/db"
 )
 
-func Home(w http.ResponseWriter, r *http.Request) {
+func Home(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
 
 	posts, err := db.GetAllPosts()
 
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		http.Error(
+			w,
+			err.Error(),
+			500,
+		)
 		return
 	}
 

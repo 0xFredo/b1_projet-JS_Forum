@@ -27,6 +27,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		identifiant := r.FormValue("identifiant")
 		email := r.FormValue("email")
 		mdp := r.FormValue("mdp")
+		role := "user"
 
 		mdp_hash, err := bcrypt.GenerateFromPassword(
 			[]byte(mdp),
@@ -42,6 +43,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			identifiant,
 			email,
 			string(mdp_hash),
+			role,
 		)
 
 		if err != nil {

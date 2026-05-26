@@ -4,11 +4,21 @@ import (
 	"b1_projet-JS_Forum/internal/models"
 )
 
-func CreateUser(identifiant, email, mdp string) error {
+func CreateUser(
+	identifiant,
+	email,
+	mdp,
+	role string,
+) error {
 
 	query := `
-	INSERT INTO users(identifiant, email, mdp_hash)
-	VALUES (?, ?, ?)
+	INSERT INTO users(
+		identifiant,
+		email,
+		mdp_hash,
+		role
+	)
+	VALUES (?, ?, ?, ?)
 	`
 
 	_, err := DB.Exec(
@@ -16,6 +26,7 @@ func CreateUser(identifiant, email, mdp string) error {
 		identifiant,
 		email,
 		mdp,
+		role,
 	)
 
 	return err
@@ -26,7 +37,7 @@ func GetUserByEmail(email string) (models.User, error) {
 	var user models.User
 
 	query := `
-	SELECT id, identifiant, email, mdp_hash
+	SELECT id, identifiant, email, mdp_hash, role
 	FROM users
 	WHERE email = ?
 	`
@@ -39,6 +50,7 @@ func GetUserByEmail(email string) (models.User, error) {
 		&user.Identifiant,
 		&user.Email,
 		&user.Mdp,
+		&user.Role,
 	)
 
 	return user, err

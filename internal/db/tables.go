@@ -10,6 +10,7 @@ func CreateTables() {
 		identifiant TEXT NOT NULL,
 		email TEXT UNIQUE NOT NULL,
 		mdp_hash TEXT NOT NULL,
+		role TEXT NOT NULL CHECK(role IN ('user', 'commere', 'admin')) DEFAULT 'user',
 		date_création DATETIME DEFAULT CURRENT_TIMESTAMP
 	);
 
@@ -48,10 +49,13 @@ func CreateTables() {
 
 	CREATE TABLE IF NOT EXISTS comments (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
+
 		post_id INTEGER NOT NULL,
 		user_id INTEGER NOT NULL,
-		contenue TEXT NOT NULL,
-		date_création DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+		content TEXT NOT NULL,
+
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 
 		FOREIGN KEY(post_id) REFERENCES posts(id),
 		FOREIGN KEY(user_id) REFERENCES users(id)
