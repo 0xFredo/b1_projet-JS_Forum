@@ -37,28 +37,22 @@
             </h2>
 
             <p>
-                Posté par : {{ .AuthorName }}
-            </p>
-
-            <p>
                 {{ .Content }}
             </p>
 
             {{ if .ImagePath }}
 
-                <img
-                    src="/{{ .ImagePath }}"
-                    width="300">
+            <img
+            src="/{{ .ImagePath }}"
+            width="300">
 
             {{ end }}
 
             <p>
-                {{ .CreatedAt.Format "02/01/2006 à 15:04" }}
+                Posté par {{ .AuthorName }}, le {{ .CreatedAt.Format "02/01/2006 à 15:04" }}
             </p>
 
         </div>
-
-        <hr>
 
     {{ end }}
 

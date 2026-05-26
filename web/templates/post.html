@@ -33,12 +33,7 @@
 <div class="post-container">
 
     <!-- ===== POST ===== -->
-    <h1>{{ .Post.Title }}</h1>
-
-    <p>
-        Posté par : {{ .Post.AuthorName }}
-    </p>
-    
+    <h1>{{ .Post.Title }}</h1>    
 
     <p>
         {{ .Post.Content }}
@@ -48,10 +43,7 @@
         <img src="/{{ .Post.ImagePath }}" width="300">
     {{ end }}
 
-    <hr>
-
     <!-- ===== COMMENTAIRES ===== -->
-    <h2>Commentaires</h2>
 
     {{ range .Comments }}
 
@@ -69,10 +61,7 @@
 
     {{ end }}
 
-    <hr>
-
     <!-- ===== FORM COMMENTAIRE ===== -->
-    <h2>Ajouter un commentaire</h2>
 
     <form action="/create-comment" method="POST">
 
