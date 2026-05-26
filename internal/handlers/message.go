@@ -50,6 +50,6 @@ func SendMessageAdmin(
 			return
 		}
 
-		w.Write([]byte("Message envoyé"))
+		SuccessAlert(w, "Message envoyé", "/")
 	}
 }

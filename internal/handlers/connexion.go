@@ -51,7 +51,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.Write([]byte("user créé"))
+		SuccessAlert(w, "user créé", "/")
 	}
 }
 
@@ -100,7 +100,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 		auth.SetSessionCookie(w, cookie)
 
-		w.Write([]byte("Connecté"))
+		SuccessAlert(w, "Connecté", "/")
 	}
 }
 
@@ -130,7 +130,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("user supprimé"))
+	SuccessAlert(w, "user supprimé", "/")
 }
 
 func CreatePost(w http.ResponseWriter, r *http.Request) {
