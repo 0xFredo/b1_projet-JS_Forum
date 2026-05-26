@@ -26,13 +26,13 @@ func SendMessageAdmin(
 
 		cookie, err := r.Cookie("session_token")
 		if err != nil {
-			http.Error(w, "Non connecté", 401)
+			ErrorAlert(w, "Non connecté", 401)
 			return
 		}
 
 		userID, err := db.GetUserIDFromToken(cookie.Value)
 		if err != nil {
-			http.Error(w, "Session invalide", 401)
+			ErrorAlert(w, "Session invalide", 401)
 			return
 		}
 
@@ -46,7 +46,7 @@ func SendMessageAdmin(
 		)
 
 		if err != nil {
-			http.Error(w, err.Error(), 500)
+			ErrorAlert(w, err.Error(), 500)
 			return
 		}
 

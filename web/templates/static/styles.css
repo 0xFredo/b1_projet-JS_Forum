@@ -166,12 +166,11 @@ h1 {
 
 /* CONTAINER GLOBAL */
 .post-container {
-    width: 60%;
+    flex: 1;              /* occupe tout l’espace disponible */
     margin: 40px auto;
-    background: white;
+    background: rgba(121, 121, 121, 0.599);
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 /* TITRES */

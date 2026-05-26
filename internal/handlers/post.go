@@ -18,21 +18,21 @@ func ViewPost(
 	postID, err := strconv.Atoi(idStr)
 
 	if err != nil {
-		http.Error(w, "Invalid ID", 400)
+		ErrorAlert(w, "Invalid ID", 400)
 		return
 	}
 
 	post, err := db.GetPostByID(postID)
 
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		ErrorAlert(w, err.Error(), 500)
 		return
 	}
 
 	comments, err := db.GetCommentsByPostID(postID)
 
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		ErrorAlert(w, err.Error(), 500)
 		return
 	}
 
@@ -59,14 +59,14 @@ func CreateComment(
 ) {
 
 	if r.Method != "POST" {
-		http.Error(w, "Method not allowed", 405)
+		ErrorAlert(w, "Method not allowed", 405)
 		return
 	}
 
 	cookie, err := r.Cookie("session_token")
 
 	if err != nil {
-		http.Error(w, "Not logged in", 401)
+		ErrorAlert(w, "Not logged in", 401)
 		return
 	}
 
@@ -75,7 +75,7 @@ func CreateComment(
 	)
 
 	if err != nil {
-		http.Error(w, "Invalid session", 401)
+		ErrorAlert(w, "Invalid session", 401)
 		return
 	}
 
@@ -92,7 +92,7 @@ func CreateComment(
 	)
 
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		ErrorAlert(w, err.Error(), 500)
 		return
 	}
 

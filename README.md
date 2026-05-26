@@ -8,13 +8,13 @@ Avec le dernier post en date et une section commentaires rien que pour vous !
 
 Envoyez moi vos infos avec l'icône d'enveloppe !!
 
-### — Photos —
+### — COMING SOON : Photos —
 
 Découvrez les clichés des populaires du campus dans leur tenue du jour !
 
 Sur son 31 ? Déguisé en donut ? Vous aurez droit à tout !
 
-### — Calendrier des fêtes —
+### — COMING SOON : Calendrier des fêtes —
 
 Vous n'avez pas reçu d'invitation ?
 

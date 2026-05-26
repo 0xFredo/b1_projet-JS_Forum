@@ -10,7 +10,7 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 
 		cookie, err := r.Cookie("session_token")
 		if err != nil {
-			http.Error(w, "Not logged in", 401)
+			ErrorAlert(w, "Not logged in", 401)
 			return
 		}
 
@@ -21,7 +21,7 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 		).Scan(&userID)
 
 		if err != nil {
-			http.Error(w, "Session invalide", 401)
+			ErrorAlert(w, "Session invalide", 401)
 			return
 		}
 

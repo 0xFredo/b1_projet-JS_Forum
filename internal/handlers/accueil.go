@@ -26,7 +26,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		ErrorAlert(w, err.Error(), 500)
 		return
 	}
 

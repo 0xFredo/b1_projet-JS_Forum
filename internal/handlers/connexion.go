@@ -35,7 +35,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if err != nil {
-			http.Error(w, "Erreur hash", 500)
+			ErrorAlert(w, "Erreur hash", 500)
 			return
 		}
 
@@ -47,7 +47,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if err != nil {
-			http.Error(w, err.Error(), 500)
+			ErrorAlert(w, err.Error(), 500)
 			return
 		}
 
@@ -76,7 +76,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		).Scan(&userID, &hash)
 
 		if err != nil {
-			http.Error(w, "User not found", 401)
+			ErrorAlert(w, "User not found", 401)
 			return
 		}
 
@@ -86,7 +86,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		)
 
 		if err != nil {
-			http.Error(w, "Mauvais mot de passe", 401)
+			ErrorAlert(w, "Mauvais mot de passe", 401)
 			return
 		}
 
@@ -94,7 +94,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 		err = db.CreateSession(userID, cookie)
 		if err != nil {
-			http.Error(w, err.Error(), 500)
+			ErrorAlert(w, err.Error(), 500)
 			return
 		}
 
@@ -107,26 +107,26 @@ func Login(w http.ResponseWriter, r *http.Request) {
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "POST" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		ErrorAlert(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
 	idStr := r.FormValue("id")
 
 	if idStr == "" {
-		http.Error(w, "id manquant", http.StatusBadRequest)
+		ErrorAlert(w, "id manquant", http.StatusBadRequest)
 		return
 	}
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		http.Error(w, "id invalide", http.StatusBadRequest)
+		ErrorAlert(w, "id invalide", http.StatusBadRequest)
 		return
 	}
 
 	err = db.DeleteUserByID(id)
 	if err != nil {
-		http.Error(w, "erreur suppression user", http.StatusInternalServerError)
+		ErrorAlert(w, "erreur suppression user", http.StatusInternalServerError)
 		return
 	}
 
@@ -141,19 +141,19 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method != "POST" {
-		http.Error(w, "Method not allowed", 405)
+		ErrorAlert(w, "Method not allowed", 405)
 		return
 	}
 
 	cookie, err := r.Cookie("session_token")
 	if err != nil {
-		http.Error(w, "Not logged in", 401)
+		ErrorAlert(w, "Not logged in", 401)
 		return
 	}
 
 	userID, err := db.GetUserIDFromToken(cookie.Value)
 	if err != nil {
-		http.Error(w, "Invalid session", 401)
+		ErrorAlert(w, "Invalid session", 401)
 		return
 	}
 
@@ -162,13 +162,13 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	categoryIDStr := r.FormValue("category_id")
 
 	if title == "" || content == "" {
-		http.Error(w, "Missing fields", 400)
+		ErrorAlert(w, "Missing fields", 400)
 		return
 	}
 
 	categoryID, err := strconv.Atoi(categoryIDStr)
 	if err != nil {
-		http.Error(w, "Invalid category", 400)
+		ErrorAlert(w, "Invalid category", 400)
 		return
 	}
 
@@ -183,7 +183,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 
 		dst, err := os.Create(imagePath)
 		if err != nil {
-			http.Error(w, err.Error(), 500)
+			ErrorAlert(w, err.Error(), 500)
 			return
 		}
 		defer dst.Close()
@@ -200,7 +200,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		ErrorAlert(w, err.Error(), 500)
 		return
 	}
 
